@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "bq-external-tables"
+version = "0.1.0"
+description = "Examples and samples using BigQuery external tables"
+authors = ["None"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "src/"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+faker = "^19.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
