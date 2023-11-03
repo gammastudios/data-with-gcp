@@ -19,3 +19,18 @@ pattern is preferrable due to batch stop/start overheads.
 * injecting operational/control metadata into tables using the BigQuery view and table objects.
 
 * demonstration of batch run error handling
+
+* using the `faker` python module to generate fake example data sets
+
+## Using jupyter notebooks with BQ
+Install jupyter noteboks via poetry
+
+```
+
+poetry install --with dev
+
+# activate the poetry environment
+poetry shell
+
+jupyter-lab
+```
