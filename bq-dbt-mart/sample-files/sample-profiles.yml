@@ -1,0 +1,21 @@
+# example dbt profile for connecting to BigQuery
+# example also demonstrates use of environment variables in the profiles.yml file
+bq_dbt_mart:
+  target: dev
+  outputs:
+    dev:
+      # prefix added to all datasets created by dbt.  Enables each developer to have their own datasets.
+      dataset: "{{ env_var('BQ_DBT_MART_DATASET_PREFIX') }}"
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      # dbt init only offers US or EU locations
+      location: australia-southeast1
+      # setting authentication to gcloud cli oauth
+      method: oauth
+      # sets the BQ session priority to interactive.  Use 'batch' for batch jobs
+      priority: interactive
+      # GCP project containing the BQ datasets
+      project: "{{ env_var('BQ_DBT_MART_GCP_PROJECT') }}"
+      # controls the number of parallel queries dbt will execute
+      threads: 1
+      type: bigquery

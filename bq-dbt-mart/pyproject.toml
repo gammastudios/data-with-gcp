@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "bq-dbt-mart"
+version = "0.1.0"
+description = "BQ data mart using dbt"
+authors = ["Chris Ottinger <chris.ottinger@gammadata.io>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "src/"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+jupyterlab = "^4.0.9"
+google-cloud-bigquery-storage = "^2.23.0"
+tqdm = "^4.66.1"
+seaborn = "^0.13.0"
+jupyter = "^1.0.0"
+dbt-bigquery = "^1.7.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
