@@ -9,6 +9,12 @@ config-version: 2
 # This setting configures which "profile" dbt uses for this project.
 profile: 'bq_dbt_mart'
 
+# Add the 'target_dt' variable with a default value of '1900-01-01'
+vars:
+  batch_dt: '1900-1-1'
+  raw_bucket: 'data-pipeline-tools-raw-data'
+  raw_bucket_prefix: 'thelook'
+
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
 # found in the "models/" directory. You probably won't need to change these!
