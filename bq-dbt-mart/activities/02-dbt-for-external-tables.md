@@ -106,7 +106,7 @@ sources:
 ```
 
 ### Create the external table
-Use the `dbt run-operation stage-external-sources` command to create the external tables in the staging
+Use the `dbt run-operation stage_external_sources` command to create the external tables in the staging
 dataset.
 
 Following a successful run, the new external table should be visible in the BQ console.  (may require 

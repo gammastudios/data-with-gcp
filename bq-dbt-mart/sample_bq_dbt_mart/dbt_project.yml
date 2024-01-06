@@ -11,7 +11,7 @@ profile: 'bq_dbt_mart'
 
 # Add the 'target_dt' variable with a default value of '1900-01-01'
 vars:
-  batch_dt: '1900-1-1'
+  batch_dt: '1900-01-01'
   raw_bucket: 'data-pipeline-tools-raw-data'
   raw_bucket_prefix: 'thelook'
 
@@ -38,6 +38,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   bq_dbt_mart:
-    # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+    staging:
+      thelook:
+        ws:
+          schema: thelook_ws
+          materialized: table
