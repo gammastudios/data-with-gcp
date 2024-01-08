@@ -1,3 +1,17 @@
+---
+version: 2
+
+### yaml anchors to reduce typing
+# date based partition columns
+.partition_columns: &partition_columns
+  - name: p_year
+    data_type: int
+  - name: p_month
+    data_type: int
+  - name: p_day
+    data_type: int
+
+
 sources:
   - name: thelook_ecommerce
     database: bigquery-public-data
@@ -49,10 +63,25 @@ sources:
             skip_leading_rows: 1
             hive_partition_uri_prefix: "gs://{{ var('raw_bucket') }}/{{ var('raw_bucket_prefix') }}/full-refresh/users/"
         partitions:
-          - name: p_year
-            data_type: int
-          - name: p_month
-            data_type: int
-          - name: p_day
-            data_type: int
+          *partition_columns
+
+      - name: distribution_centers
+        description: "Stacked daily Full Refresh from TheLook distribution_centers data"
+        columns:
+          - name: id
+            data_type: string
+          - name: name
+            data_type: string
+          - name: latitude
+            data_type: string
+          - name: longitude
+            data_type: string
+        external:
+          location: "gs://{{ var('raw_bucket') }}/{{ var('raw_bucket_prefix') }}/full-refresh/distribution_centers/*.csv"
+          options:
+            format: CSV
+            skip_leading_rows: 1
+            hive_partition_uri_prefix: "gs://{{ var('raw_bucket') }}/{{ var('raw_bucket_prefix') }}/full-refresh/distribution_centers/"
+        partitions:
+          *partition_columns
         
