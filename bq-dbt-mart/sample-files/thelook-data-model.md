@@ -107,3 +107,13 @@ users ||--o{ order_items : has
 @enduml
 
 ```
+
+```mermaid
+erDiagram
+    orders["orders"]
+    order_items["order_items"]
+    users["users"]
+    
+    orders ||--o{ order_items : has
+    users ||--o{ orders : contains
+```

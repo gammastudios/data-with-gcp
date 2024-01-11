@@ -23,7 +23,7 @@ select
     , cast(created_at as timestamp) as created_at
     , '{{ batch_id }}' as batch_id
     , '{{ invocation_id }}' as dbt_job_id
-    , '{{ run_started_at }}' as dbt_run_dttm
+    , cast('{{ run_started_at }}' as timestamp) as dbt_run_dttm
     , _FILE_NAME as file_uri
 from {{ source('stg_thelook', 'users') }}
 where p_year = {{ p_year }}

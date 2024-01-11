@@ -76,6 +76,7 @@ models:
       thelook:
         ws:
           schema: thelook_ws
+          materialized: table
 ```
 There are a number of options and configuration settings that can be added to the metadata, but for this
 step:
@@ -134,7 +135,7 @@ These additional fields will be added as columns in the working set table.
 In dbt, variables and special values are included in the SQL template using the `{{ ... }}` double
 bracket operators.
 
-First in the `users_sq.sql` file, set the `batch_id` as a dbt model variable (string):
+First in the `users_ws.sql` file, set the `batch_id` as a dbt model variable (string):
 ```
 {% set batch_id = '2023-12-05' -%}
 ```
@@ -142,9 +143,7 @@ First in the `users_sq.sql` file, set the `batch_id` as a dbt model variable (st
 Use the local dbt macro `set_partition_keys(...)` to extract the year, month, and day values from the
 batch id:
 ```
-{%- set p_year = var('batch_dt').strftime('%Y') -%}
-{%- set p_month = var('batch_dt').strftime('%m') -%}
-{%- set p_day = var('batch_dt').strftime('%d') -%}
+{%- set p_year, p_month, p_day = partition_date_keys(var('batch_dt')) -%}
 ```
 
 Now user these values in the dbt model SQL statement:
@@ -165,11 +164,16 @@ fields:
 - run_started_at for the dbt_run_dttm
 - invocation_id for the dbt_job_id
 
+* https://docs.getdbt.com/reference/dbt-jinja-functions/invocation_id
+* https://docs.getdbt.com/reference/dbt-jinja-functions/run_started_at
+
 Use the [BigQuery external table pseudo-column](https://cloud.google.com/bigquery/docs/query-cloud-storage-data#query_the_file_name_pseudo-column) to add the source filename and object storage location.
 
 ```sql
 select
     ...
+    , '{{ invocation_id }}' as dbt_job_id
+    , cast('{{ run_started_at }}' as timestamp) as dbt_run_dttm
     , _FILE_NAME as file_uri
 from ...
 ```
@@ -195,7 +199,7 @@ Update the `users_ws.sql` model to use the new dbt variable.  Modify the first 2
 reference the variable.
 ```sql
 {%- set batch_id = var('batch_dt') -%}
-{%- set p_year, p_month, p_day = partition_date_keys(var('batch_dt')) -%}
+{%- set p_year, p_month, p_day = partition_date_keys(batch_dt) -%}
 ```
 The dbt `var(...)` template function is used to access the dbt variables from SQL model templates.
 Note that the variable name must be quoted as a string.
